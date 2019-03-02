@@ -30,7 +30,7 @@ class Login(Frame):
     	button_student.pack()
     def lecturerImport(self):
     	root.destroy()
-    	import viewResults
+    	import lecturerChoice
     
 
     def studentImport(self):

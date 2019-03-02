@@ -1,6 +1,6 @@
 from tkinter import *
 import tkinter.messagebox
-class studentChoice(Frame):
+class lecturerChoice(Frame):
     
     def __init__(self, master):
         Frame.__init__(self, master)
@@ -12,7 +12,7 @@ class studentChoice(Frame):
     	self.txtDisplay = Text(self, height=10, width=50)
     	self.txtDisplay.tag_configure('boldfont', font=('MS',8, 'bold'))
 
-    	self.txtDisplay.insert(END, "\t\tChoose a test")
+    	self.txtDisplay.insert(END, "\t\tChoose a test to view results")
 
 
     	self.txtDisplay['state'] = DISABLED
@@ -28,16 +28,16 @@ class studentChoice(Frame):
     	button_student.pack()
     def Summative(self):
     	root.destroy()
-    	import SummativeAssessment
+    	import ViewSummativeResults
     	
 
     def Formative(self):
     	root.destroy()
-    	import FormativeAssessment
+    	import ViewFormativeResults
 
 
 #Main
 root = Tk()
 root.title("Choose a test")
-app = studentChoice(root)
+app = lecturerChoice(root)
 root.mainloop()
