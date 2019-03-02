@@ -1,15 +1,80 @@
 #!/usr/bin/python3
 from tkinter import *
 import tkinter.messagebox
-class SummativeAssessment(Frame):
-    
+import pickle
+import os
+from datetime import datetime
+
+class ChooseTest(Frame):
     def __init__(self, master):
         Frame.__init__(self, master)
         self.grid()
         self.createPage()
-        
     def createPage(self):
-        
+        lblList = Label(self, text='Choose Test:', font=('MS', 10,'bold'))
+        lblList.grid(row=0, column=0)
+
+        self.listTest = Listbox(self, height= 3)
+        scroll = Scrollbar(self, command= self.listTest.yview)
+        self.listTest.configure(yscrollcommand=scroll.set)
+
+        self.listTest.grid(row=0, column=2, columnspan=2)
+        scroll.grid(row=0, column=4, sticky=W)
+
+        butSelect = Button(self, text='Select',font=('MS', 10,'bold'), command = self.Select)
+        butSelect.grid(row=1, column=2)
+
+        #Gets current directory and adds path to the pickle folder
+        directory = os.getcwd() + "\\sumPickle"
+        listFile = []
+        for file in os.listdir(directory):
+            if file.endswith(".pickle"):
+                listFile.append(file)
+
+        for item in listFile:
+            self.listTest.insert(END, item)
+        self.listTest.selection_set(END)
+
+    def Select(self):
+        global rootSum
+        rootSum = Toplevel(self)
+        index = self.listTest.curselection()[0]
+        strName = str(self.listTest.get(index))
+        root.withdraw()
+        SummativeAssessment(rootSum, strName)
+
+class SummativeAssessment(Frame):
+
+    def __init__(self, master, filename):
+        self.filename = filename
+        directory = os.getcwd() + "\\sumPickle\\" + filename
+        pickle_in = open(directory, "rb")
+        inList = pickle.load(pickle_in)
+        print(inList)
+
+        currentDate = datetime.now()
+        dateFormat = "%d/%m/%Y"
+        startDate = datetime.strptime(inList[1], dateFormat)
+        endDate = datetime.strptime(inList[2], dateFormat)
+        if (currentDate > endDate) == True:
+            rootSum.destroy()
+            errorText = "Test is unavailable after " + inList[2]
+            tkinter.messagebox.showwarning("Date Error", errorText)
+            root.deiconify()
+        elif(currentDate < startDate) == True:
+            rootSum.destroy()
+            errorText = "Test is available from " + inList[1]
+            tkinter.messagebox.showwarning("Date Error", errorText)
+            root.deiconify()
+        else:
+            Frame.__init__(self, master)
+            self.grid()
+            self.createPage(inList)
+            root.after(int(inList[0]) * 1000, lambda: (tkinter.messagebox.showwarning("Time Exceeded", "The test duration has been exceeded, you cannot continue the test."), root.destroy()))
+
+
+    def createPage(self, inList):
+
         lblGrid= Label(self, width = "15", height = "2")
         lblGrid.grid(row=0, column=0)
 
@@ -19,76 +84,76 @@ class SummativeAssessment(Frame):
         lblGrid= Label(self, width = "15", height = "2")
         lblGrid.grid(row=0, column=2)
 
-        lblQ1= Label(self, text="Question 1", font=('MS', 10, "bold"))
+        lblQ1= Label(self, text=inList[3], font=('MS', 10, "bold"))
         lblQ1.grid(row=1, column=0)
 
         self.varQ1 = StringVar()
         self.entQ1 = Entry(self, textvariable=self.varQ1)
         self.entQ1.grid(row=2, column=0)
 
-        lblQ2= Label(self, text="Question 2", font=('MS', 10, "bold"))
+        lblQ2= Label(self, text=inList[4], font=('MS', 10, "bold"))
         lblQ2.grid(row=3, column=0)
 
         self.varQ2 = StringVar()
         self.entQ2 = Entry(self, textvariable=self.varQ2)
         self.entQ2.grid(row=4, column=0)
 
-        lblQ3= Label(self, text="Question 3", font=('MS', 10, "bold"))
+        lblQ3= Label(self, text=inList[5], font=('MS', 10, "bold"))
         lblQ3.grid(row=5, column=0)
 
         self.varQ3 = StringVar()
         self.entQ3 = Entry(self, textvariable=self.varQ3)
         self.entQ3.grid(row=6, column=0)
 
-        lblQ4= Label(self, text="Question 4", font=('MS', 10, "bold"))
+        lblQ4= Label(self, text=inList[6], font=('MS', 10, "bold"))
         lblQ4.grid(row=7, column=0)
 
         self.varQ4 = StringVar()
         self.entQ4 = Entry(self, textvariable=self.varQ4)
         self.entQ4.grid(row=8, column=0)
 
-        lblQ5= Label(self, text="Question 5", font=('MS', 10, "bold"))
+        lblQ5= Label(self, text=inList[7], font=('MS', 10, "bold"))
         lblQ5.grid(row=9, column=0)
 
         self.varQ5 = StringVar()
         self.entQ5 = Entry(self, textvariable=self.varQ5)
         self.entQ5.grid(row=10, column=0)
 
-        lblQ6= Label(self, text="Question 6", font=('MS', 10, "bold"))
+        lblQ6= Label(self, text=inList[8], font=('MS', 10, "bold"))
         lblQ6.grid(row=1, column=1)
 
         self.varQ6 = StringVar()
         self.entQ6 = Entry(self, textvariable=self.varQ6)
         self.entQ6.grid(row=2, column=1)
 
-        lblQ7= Label(self, text="Question 7", font=('MS', 10, "bold"))
+        lblQ7= Label(self, text=inList[9], font=('MS', 10, "bold"))
         lblQ7.grid(row=3, column=1)
 
         self.varQ7 = StringVar()
         self.entQ7 = Entry(self, textvariable=self.varQ7)
         self.entQ7.grid(row=4, column=1)
 
-        lblQ8= Label(self, text="Question 8", font=('MS', 10, "bold"))
+        lblQ8= Label(self, text=inList[10], font=('MS', 10, "bold"))
         lblQ8.grid(row=5, column=1)
 
         self.varQ8 = StringVar()
         self.entQ8 = Entry(self, textvariable=self.varQ8)
         self.entQ8.grid(row=6, column=1)
 
-        lblQ9= Label(self, text="Question 9", font=('MS', 10, "bold"))
+        lblQ9= Label(self, text=inList[11], font=('MS', 10, "bold"))
         lblQ9.grid(row=7, column=1)
 
         self.varQ9 = StringVar()
         self.entQ9 = Entry(self, textvariable=self.varQ9)
         self.entQ9.grid(row=8, column=1)
 
-        lblQ10= Label(self, text="Question 10", font=('MS', 10, "bold"))
+        lblQ10= Label(self, text=inList[12], font=('MS', 10, "bold"))
         lblQ10.grid(row=9, column=1)
 
         self.varQ10 = StringVar()
         self.entQ10 = Entry(self, textvariable=self.varQ10)
         self.entQ10.grid(row=10, column=1)
-        
+
         lblQ11=Label(self, text="Enter your name: ", font=('MS', 10, "bold"))
         lblQ11.grid(row=11,column=0)
 
@@ -113,7 +178,7 @@ class SummativeAssessment(Frame):
             reader = csv.reader(csvfile)
             row1 = next(reader)
             student_result.append(d[0])
-            for i in range (1, len(d)): 
+            for i in range (1, len(d)):
                 if d[i] == row1[i-1]:
                     student_result.append(1)
                 else:
@@ -135,13 +200,13 @@ class SummativeAssessment(Frame):
 
 
 
-                
-        
 
 
-       
-                        
+
+
+
+
 root = Tk()
-root.title("Formative Assessment")
-app = SummativeAssessment(root)
+root.title("Summative Assessment")
+app = ChooseTest(root)
 root.mainloop()
