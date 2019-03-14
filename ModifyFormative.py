@@ -2,21 +2,65 @@ from tkinter import *
 import tkinter.messagebox
 import pickle
 import os
+from datetime import datetime
+import copy
 
-class CreateAssessment(Frame):
-    # GUI Setup
+class ChooseTest(Frame):
     def __init__(self, master):
-        # Initialise Questionnaire Class
         Frame.__init__(self, master)
         self.grid()
-
-        self.createTypeOfTest()
         self.createPage()
-        self.createButtons()
-        self.setDate()
 
     def createPage(self):
-        # Create widgets to select a degree programme from a list
+        lblList = Label(self, text='Choose Test:', font=('MS', 10,'bold'))
+        lblList.grid(row=0, column=0)
+
+        self.listTest = Listbox(self, height= 3)
+        scroll = Scrollbar(self, command= self.listTest.yview)
+        self.listTest.configure(yscrollcommand=scroll.set)
+
+        self.listTest.grid(row=0, column=2, columnspan=2)
+        scroll.grid(row=0, column=4, sticky=W)
+
+        butSelect = Button(self, text='Select',font=('MS', 10,'bold'), command = self.Select)
+        butSelect.grid(row=1, column=2)
+
+        #Gets current directory and adds path to the pickle folder
+        directory = os.getcwd() + "\\formPickle"
+        listFile = []
+        for file in os.listdir(directory):
+            if file.endswith(".pickle"):
+                listFile.append(file)
+        for item in listFile:
+            self.listTest.insert(END, item)
+        self.listTest.selection_set(END)
+
+    def Select(self):
+        global rootForm
+        rootForm = Toplevel(self)
+        index = self.listTest.curselection()[0]
+        strName = str(self.listTest.get(index))
+        root.withdraw()
+        ModifyForm(rootForm, strName)
+
+class ModifyForm(Frame):
+
+    def __init__(self, master, filename):
+        self.filename = filename
+        directory = os.getcwd() + "\\formPickle\\" + filename
+        pickle_in = open(directory, "rb")
+        inList = pickle.load(pickle_in)
+        print(inList)
+
+        Frame.__init__(self, master)
+        self.grid()
+        self.createPage()
+        self.setDate()
+        self.initForm(inList, filename.strip(".pickle"))
+        self.createButton()
+
+    def createPage(self):
+
         lblProg = Label(self, text='Time allowed for \ntest in minutes:', font=('MS', 8,'bold'))
         lblProg.grid(row=0, column=0, columnspan=2, sticky=E)
 
@@ -29,7 +73,6 @@ class CreateAssessment(Frame):
 
         for item in ["10", "15", "20", "25", "30"]:
             self.listTime.insert(END, item)
-        self.listTime.selection_set(END)
 
         lblQ1= Label(self, text="Question 1", font=('MS', 10, "bold"))
         lblQ1.grid(row=13, column=0)
@@ -101,28 +144,6 @@ class CreateAssessment(Frame):
         self.entQ10 = Entry(self, textvariable=self.varQ10)
         self.entQ10.grid(row=22, column=1)
 
-        lblFileName = Label(self, text="Test Name:")
-        lblFileName.grid(row=16, column = 2, sticky=E)
-        self.testname = StringVar()
-        eName = Entry(self, textvariable=self.testname)
-        eName.grid(row=16, column=3)
-
-    def createTypeOfTest(self):
-
-        lblSecTitle = Label(self, text = 'Type of Test:', font=('MS', 8,'bold'))
-        lblSecTitle.grid(row=4, column= 0)
-        lblForm = Label(self, text = 'Formative', font=('MS', 8,'bold'))
-        lblForm.grid(row=5, column= 0)
-        lblSum = Label(self, text = 'Summative', font=('MS', 8,'bold'))
-        lblSum.grid(row=6, column= 0)
-
-        self.testVar = IntVar()
-        form = Radiobutton(self, variable=self.testVar, value=1)
-        form.grid(row=5, column= 1)
-        summ = Radiobutton(self, variable= self.testVar, value=2)
-        summ.grid(row=6, column= 1)
-
-
     def setDate(self):
         Label(self, text="Start Date").grid(row=10)
         Label(self, text="End Date").grid(row=11)
@@ -148,43 +169,46 @@ class CreateAssessment(Frame):
         self.ent5.grid(row=11, column=2)
         self.ent6.grid(row=11, column=3)
 
-    def createButtons(self):
-        butClear = Button(self, text='Clear',font=('MS', 10,'bold'), command=self.clear)
-        butClear.grid(row=18, column=3)
+    def initForm(self, inList, filename):
+        selfList = copy.deepcopy(inList)
+        temp = selfList[1]
+        selfList[1] = temp.split("/")
+        temp = selfList[2]
+        selfList[2] = temp.split("/")
 
+        referDic = {"10":0, "15":1, "20":2, "25":3, "30":4}
+        self.listTime.selection_set(referDic[selfList[0]])
+        self.startD.set(selfList[1][0])
+        self.startM.set(selfList[1][1])
+        self.startY.set(selfList[1][2])
+        self.endD.set(selfList[2][0])
+        self.endM.set(selfList[2][1])
+        self.endY.set(selfList[2][2])
+        self.varQ1.set(selfList[3])
+        self.varQ2.set(selfList[4])
+        self.varQ3.set(selfList[5])
+        self.varQ4.set(selfList[6])
+        self.varQ5.set(selfList[7])
+        self.varQ6.set(selfList[8])
+        self.varQ7.set(selfList[9])
+        self.varQ8.set(selfList[10])
+        self.varQ9.set(selfList[11])
+        self.varQ10.set(selfList[12])
+
+    def createButton(self):
         butSubmit = Button(self, text='Submit',font=('MS', 10,'bold'), command=self.submit)
-        butSubmit.grid(row=18, column=2)
-
-
-    def clear(self):
-        self.testname.set("")
-        self.listTime.selection_clear(0,END)
-        self.startD.set("")
-        self.startM.set("")
-        self.startY.set("")
-        self.endD.set("")
-        self.endM.set("")
-        self.endY.set("")
-        self.testVar.set(0)
-        self.varQ1.set("")
-        self.varQ2.set("")
-        self.varQ3.set("")
-        self.varQ4.set("")
-        self.varQ5.set("")
-        self.varQ6.set("")
-        self.varQ7.set("")
-        self.varQ8.set("")
-        self.varQ9.set("")
-        self.varQ10.set("")
+        butSubmit.grid(row=22, column=3)
 
     def submit(self):
+        filename = self.filename.strip(".pickle")
+        print(filename)
         try:
             self.listTime.curselection()[0]
             listProp = True
         except:
             listProp = False
         if (listProp == False or (len(self.startD.get()) == 0) or (len(self.startM.get()) == 0) or (len(self.startY.get()) == 0) or (len(self.endD.get()) == 0) or
-                (len(self.endM.get()) == 0) or (len(self.endY.get()) == 0) or self.testVar.get() == 0 or (len(self.testname.get()) == 0) or
+                (len(self.endM.get()) == 0) or (len(self.endY.get()) == 0) or
                 (len(self.varQ1.get()) == 0) or (len(self.varQ2.get()) == 0) or (len(self.varQ3.get()) == 0) or (len(self.varQ4.get()) == 0) or
                 (len(self.varQ5.get()) == 0) or (len(self.varQ6.get()) == 0) or (len(self.varQ7.get()) == 0) or (len(self.varQ8.get()) == 0) or
                 (len(self.varQ9.get()) == 0) or (len(self.varQ10.get()) == 0)):
@@ -195,16 +219,14 @@ class CreateAssessment(Frame):
 
             inList = [strTime, self.startD.get() + "/" + self.startM.get() + "/" + self.startY.get(), self.endD.get() + "/" + self.endM.get() + "/" + self.endY.get(), self.varQ1.get(), self.varQ2.get(), self.varQ3.get(), self.varQ4.get(), self.varQ5.get(), self.varQ6.get(),
                                 self.varQ7.get(), self.varQ8.get(), self.varQ9.get(), self.varQ10.get()]
-            directory = os.getcwd() + "\\formPickle\\" + self.testname.get() + ".pickle"
+            directory = os.getcwd() + "\\formPickle\\" + filename + ".pickle"
             pickle_out = open(directory, "wb")
             pickle.dump(inList, pickle_out)
             pickle_out.close()
-            tkinter.messagebox.showwarning("Submitted", "You have created a test successfully!")
+            tkinter.messagebox.showwarning("Submitted", "You have modified " + filename + " successfully!")
             root.destroy()
-
-
 #main
 root = Tk()
-root.title("Create Assessment")
-app = CreateAssessment(root)
+root.title("Modify Formative Assessment")
+ChooseTest(root)
 root.mainloop()
