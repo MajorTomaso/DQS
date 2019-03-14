@@ -195,7 +195,10 @@ class CreateAssessment(Frame):
 
             inList = [strTime, self.startD.get() + "/" + self.startM.get() + "/" + self.startY.get(), self.endD.get() + "/" + self.endM.get() + "/" + self.endY.get(), self.varQ1.get(), self.varQ2.get(), self.varQ3.get(), self.varQ4.get(), self.varQ5.get(), self.varQ6.get(),
                                 self.varQ7.get(), self.varQ8.get(), self.varQ9.get(), self.varQ10.get()]
-            directory = os.getcwd() + "\\formPickle\\" + self.testname.get() + ".pickle"
+            if self.testVar.get() == 1:
+                directory = os.getcwd() + "\\formPickle\\" + self.testname.get() + ".pickle"
+            else:
+                directory = os.getcwd() + "\\sumPickle\\" + self.testname.get() + ".pickle"
             pickle_out = open(directory, "wb")
             pickle.dump(inList, pickle_out)
             pickle_out.close()
