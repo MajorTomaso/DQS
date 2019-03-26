@@ -4,7 +4,7 @@ import pickle
 import os
 from datetime import datetime
 import copy
-
+import os
 class ChooseTest(Frame):
     def __init__(self, master):
         Frame.__init__(self, master)
@@ -50,13 +50,21 @@ class ModifyForm(Frame):
         directory = os.getcwd() + "\\formPickle\\" + filename
         pickle_in = open(directory, "rb")
         inList = pickle.load(pickle_in)
-        print(inList)
-
+        ansList = []
+        import csv
+        with open("FormativeAnswers.csv") as csvfile:            
+                reader = csv.reader(csvfile)
+                for row in reader:
+                    if row[0] == filename:
+                        for i in range(1,11):
+                            ansList.append(row[i])
+                            
+        print(ansList)
         Frame.__init__(self, master)
         self.grid()
         self.createPage()
         self.setDate()
-        self.initForm(inList, filename.strip(".pickle"))
+        self.initForm(inList, filename.strip(".pickle"), ansList)
         self.createButton()
 
     def createPage(self):
@@ -144,6 +152,82 @@ class ModifyForm(Frame):
         self.entQ10 = Entry(self, textvariable=self.varQ10)
         self.entQ10.grid(row=22, column=1)
 
+        lblempty= Label(self, text="\t\t\t", font=('MS', 10, "bold"))
+        lblempty.grid(row=23, column=0)
+
+        lblempty1= Label(self, text="\t\t\t", font=('MS', 10, "bold"))
+        lblempty1.grid(row=24, column=0)
+        
+        lblAns1= Label(self, text="Answer 1", font=('MS', 10, "bold"))
+        lblAns1.grid(row=25, column=0)
+
+        self.varAns1 = StringVar()
+        self.entAns1 = Entry(self, textvariable=self.varAns1)
+        self.entAns1.grid(row=26, column=0)
+
+        lblAns2= Label(self, text="Answer 2", font=('MS', 10, "bold"))
+        lblAns2.grid(row=27, column=0)
+
+        self.varAns2 = StringVar()
+        self.entAns2 = Entry(self, textvariable=self.varAns2)
+        self.entAns2.grid(row=28, column=0)
+
+        lblAns3= Label(self, text="Answer 3", font=('MS', 10, "bold"))
+        lblAns3.grid(row=29, column=0)
+
+        self.varAns3 = StringVar()
+        self.entAns3 = Entry(self, textvariable=self.varAns3)
+        self.entAns3.grid(row=30, column=0)
+
+        lblAns4= Label(self, text="Answer 4", font=('MS', 10, "bold"))
+        lblAns4.grid(row=31, column=0)
+
+        self.varAns4 = StringVar()
+        self.entAns4 = Entry(self, textvariable=self.varAns4)
+        self.entAns4.grid(row=32, column=0)
+
+        lblAns5= Label(self, text="Answer 5", font=('MS', 10, "bold"))
+        lblAns5.grid(row=33, column=0)
+
+        self.varAns5 = StringVar()
+        self.entAns5 = Entry(self, textvariable=self.varAns5)
+        self.entAns5.grid(row=34, column=0)
+
+        lblAns6= Label(self, text="Answer 6", font=('MS', 10, "bold"))
+        lblAns6.grid(row=25, column=1)
+
+        self.varAns6 = StringVar()
+        self.entAns6 = Entry(self, textvariable=self.varAns6)
+        self.entAns6.grid(row=26, column=1)
+
+        lblAns7= Label(self, text="Answer 7", font=('MS', 10, "bold"))
+        lblAns7.grid(row=27, column=1)
+
+        self.varAns7 = StringVar()
+        self.entAns7 = Entry(self, textvariable=self.varAns7)
+        self.entAns7.grid(row=28, column=1)
+
+        lblAns8= Label(self, text="Answer 8", font=('MS', 10, "bold"))
+        lblAns8.grid(row=29, column=1)
+
+        self.varAns8 = StringVar()
+        self.entAns8 = Entry(self, textvariable=self.varAns8)
+        self.entAns8.grid(row=30, column=1)
+
+        lblAns9= Label(self, text="Answer 9", font=('MS', 10, "bold"))
+        lblAns9.grid(row=31, column=1)
+
+        self.varAns9 = StringVar()
+        self.entAns9 = Entry(self, textvariable=self.varAns9)
+        self.entAns9.grid(row=32, column=1)
+
+        lblAns10= Label(self, text="Answer 10", font=('MS', 10, "bold"))
+        lblAns10.grid(row=33, column=1)
+
+        self.varAns10 = StringVar()
+        self.entAns10 = Entry(self, textvariable=self.varAns10)
+        self.entAns10.grid(row=34, column=1)
+
     def setDate(self):
         Label(self, text="Start Date").grid(row=10)
         Label(self, text="End Date").grid(row=11)
@@ -169,8 +253,9 @@ class ModifyForm(Frame):
         self.ent5.grid(row=11, column=2)
         self.ent6.grid(row=11, column=3)
 
-    def initForm(self, inList, filename):
+    def initForm(self, inList, filename, ansList1):
         selfList = copy.deepcopy(inList)
+        ansList = copy.deepcopy(ansList1)
         temp = selfList[1]
         selfList[1] = temp.split("/")
         temp = selfList[2]
@@ -194,6 +279,17 @@ class ModifyForm(Frame):
         self.varQ8.set(selfList[10])
         self.varQ9.set(selfList[11])
         self.varQ10.set(selfList[12])
+        self.varAns1.set(ansList[0])
+        self.varAns2.set(ansList[1])
+        self.varAns3.set(ansList[2])
+        self.varAns4.set(ansList[3])
+        self.varAns5.set(ansList[4])
+        self.varAns6.set(ansList[5])
+        self.varAns7.set(ansList[6])
+        self.varAns8.set(ansList[7])
+        self.varAns9.set(ansList[8])
+        self.varAns10.set(ansList[9])
+        
 
     def createButton(self):
         butSubmit = Button(self, text='Submit',font=('MS', 10,'bold'), command=self.submit)
@@ -211,7 +307,9 @@ class ModifyForm(Frame):
                 (len(self.endM.get()) == 0) or (len(self.endY.get()) == 0) or
                 (len(self.varQ1.get()) == 0) or (len(self.varQ2.get()) == 0) or (len(self.varQ3.get()) == 0) or (len(self.varQ4.get()) == 0) or
                 (len(self.varQ5.get()) == 0) or (len(self.varQ6.get()) == 0) or (len(self.varQ7.get()) == 0) or (len(self.varQ8.get()) == 0) or
-                (len(self.varQ9.get()) == 0) or (len(self.varQ10.get()) == 0)):
+                (len(self.varQ9.get()) == 0) or (len(self.varQ10.get()) == 0)or (len(self.varAns1.get()) == 0) or (len(self.varAns2.get()) == 0) or
+                (len(self.varAns3.get()) == 0) or (len(self.varAns4.get()) == 0) or (len(self.varAns5.get()) == 0) or (len(self.varAns6.get()) == 0) or
+                (len(self.varAns7.get()) == 0) or (len(self.varAns8.get()) == 0) or (len(self.varAns9.get()) == 0) or (len(self.varAns10.get()) == 0)):
             tkinter.messagebox.showwarning("Submit Error", "Select all of the boxes.")
         else:
             index = self.listTime.curselection()[0]
@@ -219,6 +317,29 @@ class ModifyForm(Frame):
 
             inList = [strTime, self.startD.get() + "/" + self.startM.get() + "/" + self.startY.get(), self.endD.get() + "/" + self.endM.get() + "/" + self.endY.get(), self.varQ1.get(), self.varQ2.get(), self.varQ3.get(), self.varQ4.get(), self.varQ5.get(), self.varQ6.get(),
                                 self.varQ7.get(), self.varQ8.get(), self.varQ9.get(), self.varQ10.get()]
+            ansList = [filename + ".pickle", self.varAns1.get(), self.varAns2.get(), self.varAns3.get(), self.varAns4.get(), self.varAns5.get(), self.varAns6.get(), self.varAns7.get(), self.varAns8.get(),
+                       self.varAns9.get(), self.varAns10.get()]
+            print(ansList)
+            import csv
+            with open('FormativeAnswers.csv') as csvfile:
+                data = list(csv.reader(csvfile))
+                print(data)
+                print(filename)
+            with open('FormativeAnswers1.csv', mode='w', newline='') as csvfile:
+                writer = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
+                for row in data:
+                    if row[0] != (filename + ".pickle") :
+                        writer.writerow(row)
+                        print('first if')
+                    elif row[0] == (filename + ".pickle"):
+                        print('second if')
+                        writer.writerow(ansList)
+            os.remove("FormativeAnswers.csv")
+            os.rename('FormativeAnswers1.csv', 'FormativeAnswers.csv')
+                        
+                        
+    
+                
             directory = os.getcwd() + "\\formPickle\\" + filename + ".pickle"
             pickle_out = open(directory, "wb")
             pickle.dump(inList, pickle_out)

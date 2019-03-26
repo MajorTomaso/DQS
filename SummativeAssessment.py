@@ -47,6 +47,9 @@ class SummativeAssessment(Frame):
 
     def __init__(self, master, filename):
         self.filename = filename
+        global filename1
+        filename1=filename
+        print(filename)
         directory = os.getcwd() + "\\sumPickle\\" + filename
         pickle_in = open(directory, "rb")
         inList = pickle.load(pickle_in)
@@ -176,13 +179,14 @@ class SummativeAssessment(Frame):
         student_result=[]
         with open('SummativeAnswers.csv') as csvfile:
             reader = csv.reader(csvfile)
-            row1 = next(reader)
             student_result.append(d[0])
-            for i in range (1, len(d)):
-                if d[i] == row1[i-1]:
-                    student_result.append(1)
-                else:
-                    student_result.append(0)
+            for row in reader:
+                if row[0] == filename1:
+                    for i in range (1, len(d)):
+                        if d[i] == row[i]:
+                            student_result.append(1)
+                        else:
+                            student_result.append(0)
         sum = 0
         for i in range(1,len(student_result)):
             sum+=student_result[i]

@@ -46,6 +46,8 @@ class FormAssessment(Frame):
 
     def __init__(self, master,filename):
         self.filename = filename
+        global filename1
+        filename1 = filename
         directory = os.getcwd() + "\\formPickle\\" + filename
         pickle_in = open(directory, "rb")
         inList = pickle.load(pickle_in)
@@ -172,29 +174,20 @@ class FormAssessment(Frame):
             d = [self.varQ1.get(), self.varQ2.get(), self.varQ3.get(), self.varQ4.get(), self.varQ5.get(), self.varQ6.get(),
                  self.varQ7.get(), self.varQ8.get(), self.varQ9.get(), self.varQ10.get()]
 
-            matchList = []
             student_result = []
             import csv
-            with open("FormativeAnswers.csv") as csvfile:
-                csvAns = csv.reader(csvfile)
-                for answers in csvAns:
-                    listAns = answers
-                    i = 0;
-                    while i != len(listAns):
-                        if listAns[i] == d[i]:
-                            matchList.append(listAns[i])
-                        i = i + 1
-                        
-            #Tomi's code
+            matchList = []
             with open("FormativeAnswers.csv") as csvfile:            
                 reader = csv.reader(csvfile)
-                row1 = next(reader)
-                for i in range (0, len(d)): 
-                    if d[i] == row1[i]:
-                        student_result.append(1)
-                    else:
-                        student_result.append(0)
-            print(matchList)
+                for row in reader:
+                    if row[0] == filename1:
+                        for i in range (0, len(d)): 
+                            if d[i] == row[i+1]:
+                                student_result.append(1)
+                                matchList.append(1)
+                            else:
+                                student_result.append(0)
+
             print(student_result)
             with open('FormativeResults.csv', mode='a', newline='') as results_file:
                 write_results = csv.writer(results_file, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)

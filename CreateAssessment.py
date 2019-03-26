@@ -2,7 +2,7 @@ from tkinter import *
 import tkinter.messagebox
 import pickle
 import os
-
+import csv
 class CreateAssessment(Frame):
     # GUI Setup
     def __init__(self, master):
@@ -101,11 +101,88 @@ class CreateAssessment(Frame):
         self.entQ10 = Entry(self, textvariable=self.varQ10)
         self.entQ10.grid(row=22, column=1)
 
+        lblempty= Label(self, text="\t\t\t", font=('MS', 10, "bold"))
+        lblempty.grid(row=23, column=0)
+
+        lblempty1= Label(self, text="\t\t\t", font=('MS', 10, "bold"))
+        lblempty1.grid(row=24, column=0)
+        
+        lblAns1= Label(self, text="Answer 1", font=('MS', 10, "bold"))
+        lblAns1.grid(row=25, column=0)
+
+        self.varAns1 = StringVar()
+        self.entAns1 = Entry(self, textvariable=self.varAns1)
+        self.entAns1.grid(row=26, column=0)
+
+        lblAns2= Label(self, text="Answer 2", font=('MS', 10, "bold"))
+        lblAns2.grid(row=27, column=0)
+
+        self.varAns2 = StringVar()
+        self.entAns2 = Entry(self, textvariable=self.varAns2)
+        self.entAns2.grid(row=28, column=0)
+
+        lblAns3= Label(self, text="Answer 3", font=('MS', 10, "bold"))
+        lblAns3.grid(row=29, column=0)
+
+        self.varAns3 = StringVar()
+        self.entAns3 = Entry(self, textvariable=self.varAns3)
+        self.entAns3.grid(row=30, column=0)
+
+        lblAns4= Label(self, text="Answer 4", font=('MS', 10, "bold"))
+        lblAns4.grid(row=31, column=0)
+
+        self.varAns4 = StringVar()
+        self.entAns4 = Entry(self, textvariable=self.varAns4)
+        self.entAns4.grid(row=32, column=0)
+
+        lblAns5= Label(self, text="Answer 5", font=('MS', 10, "bold"))
+        lblAns5.grid(row=33, column=0)
+
+        self.varAns5 = StringVar()
+        self.entAns5 = Entry(self, textvariable=self.varAns5)
+        self.entAns5.grid(row=34, column=0)
+
+        lblAns6= Label(self, text="Answer 6", font=('MS', 10, "bold"))
+        lblAns6.grid(row=25, column=1)
+
+        self.varAns6 = StringVar()
+        self.entAns6 = Entry(self, textvariable=self.varAns6)
+        self.entAns6.grid(row=26, column=1)
+
+        lblAns7= Label(self, text="Answer 7", font=('MS', 10, "bold"))
+        lblAns7.grid(row=27, column=1)
+
+        self.varAns7 = StringVar()
+        self.entAns7 = Entry(self, textvariable=self.varAns7)
+        self.entAns7.grid(row=28, column=1)
+
+        lblAns8= Label(self, text="Answer 8", font=('MS', 10, "bold"))
+        lblAns8.grid(row=29, column=1)
+
+        self.varAns8 = StringVar()
+        self.entAns8 = Entry(self, textvariable=self.varAns8)
+        self.entAns8.grid(row=30, column=1)
+
+        lblAns9= Label(self, text="Answer 9", font=('MS', 10, "bold"))
+        lblAns9.grid(row=31, column=1)
+
+        self.varAns9 = StringVar()
+        self.entAns9 = Entry(self, textvariable=self.varAns9)
+        self.entAns9.grid(row=32, column=1)
+
+        lblAns10= Label(self, text="Answer 10", font=('MS', 10, "bold"))
+        lblAns10.grid(row=33, column=1)
+
+        self.varAns10 = StringVar()
+        self.entAns10 = Entry(self, textvariable=self.varAns10)
+        self.entAns10.grid(row=34, column=1)
+        
+
         lblFileName = Label(self, text="Test Name:")
-        lblFileName.grid(row=16, column = 2, sticky=E)
+        lblFileName.grid(row=23, column = 2, sticky=E)
         self.testname = StringVar()
         eName = Entry(self, textvariable=self.testname)
-        eName.grid(row=16, column=3)
+        eName.grid(row=23, column=3)
 
     def createTypeOfTest(self):
 
@@ -150,10 +227,10 @@ class CreateAssessment(Frame):
 
     def createButtons(self):
         butClear = Button(self, text='Clear',font=('MS', 10,'bold'), command=self.clear)
-        butClear.grid(row=18, column=3)
+        butClear.grid(row=24, column=3)
 
         butSubmit = Button(self, text='Submit',font=('MS', 10,'bold'), command=self.submit)
-        butSubmit.grid(row=18, column=2)
+        butSubmit.grid(row=24, column=2)
 
 
     def clear(self):
@@ -187,7 +264,9 @@ class CreateAssessment(Frame):
                 (len(self.endM.get()) == 0) or (len(self.endY.get()) == 0) or self.testVar.get() == 0 or (len(self.testname.get()) == 0) or
                 (len(self.varQ1.get()) == 0) or (len(self.varQ2.get()) == 0) or (len(self.varQ3.get()) == 0) or (len(self.varQ4.get()) == 0) or
                 (len(self.varQ5.get()) == 0) or (len(self.varQ6.get()) == 0) or (len(self.varQ7.get()) == 0) or (len(self.varQ8.get()) == 0) or
-                (len(self.varQ9.get()) == 0) or (len(self.varQ10.get()) == 0)):
+                (len(self.varQ9.get()) == 0) or (len(self.varQ10.get()) == 0) or (len(self.varAns1.get()) == 0) or (len(self.varAns2.get()) == 0) or
+                (len(self.varAns3.get()) == 0) or (len(self.varAns4.get()) == 0) or (len(self.varAns5.get()) == 0) or (len(self.varAns6.get()) == 0) or
+                (len(self.varAns7.get()) == 0) or (len(self.varAns8.get()) == 0) or (len(self.varAns9.get()) == 0) or (len(self.varAns10.get()) == 0)):
             tkinter.messagebox.showwarning("Submit Error", "Select all of the boxes.")
         else:
             index = self.listTime.curselection()[0]
@@ -195,9 +274,18 @@ class CreateAssessment(Frame):
 
             inList = [strTime, self.startD.get() + "/" + self.startM.get() + "/" + self.startY.get(), self.endD.get() + "/" + self.endM.get() + "/" + self.endY.get(), self.varQ1.get(), self.varQ2.get(), self.varQ3.get(), self.varQ4.get(), self.varQ5.get(), self.varQ6.get(),
                                 self.varQ7.get(), self.varQ8.get(), self.varQ9.get(), self.varQ10.get()]
+            ansList = [self.testname.get()+".pickle", self.varAns1.get(), self.varAns2.get(), self.varAns3.get(), self.varAns4.get(), self.varAns5.get(), self.varAns6.get(), self.varAns7.get(), self.varAns8.get(),
+                       self.varAns9.get(), self.varAns10.get()]
+    
             if self.testVar.get() == 1:
+                with open('FormativeAnswers.csv', mode='a', newline='') as csvfile:
+                    write_answers = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
+                    write_answers.writerow(ansList)
                 directory = os.getcwd() + "\\formPickle\\" + self.testname.get() + ".pickle"
             else:
+                with open('SummativeAnswers.csv', mode='a', newline='') as csvfile:
+                    write_answers = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
+                    write_answers.writerow(ansList)
                 directory = os.getcwd() + "\\sumPickle\\" + self.testname.get() + ".pickle"
             pickle_out = open(directory, "wb")
             pickle.dump(inList, pickle_out)
