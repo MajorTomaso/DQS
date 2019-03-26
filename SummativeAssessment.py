@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 from tkinter import *
 import tkinter.messagebox
 import pickle
@@ -172,7 +171,7 @@ class SummativeAssessment(Frame):
 
 
     def Submit(self):
-        d = [self.varQ11.get(),self.varQ1.get(), self.varQ2.get(), self.varQ3.get(), self.varQ4.get(), self.varQ5.get(), self.varQ6.get(),
+        d = [self.varQ1.get(), self.varQ2.get(), self.varQ3.get(), self.varQ4.get(), self.varQ5.get(), self.varQ6.get(),
                  self.varQ7.get(), self.varQ8.get(), self.varQ9.get(), self.varQ10.get()]
         for value in d:
             if len(value)==0:
@@ -180,16 +179,19 @@ class SummativeAssessment(Frame):
                 break
         import csv
         student_result=[]
-        with open('SummativeAnswers.csv') as csvfile:
+        with open("SummativeAnswers.csv") as csvfile:
             reader = csv.reader(csvfile)
-            student_result.append(d[0])
+            student_result.append(self.varQ11.get())
             for row in reader:
                 if row[0] == filename1:
-                    for i in range (1, len(d)):
-                        if d[i] == row[i]:
+                    print(len(d))
+                    for i in range (0, len(d)):
+                        print(d[i] == row[i+1])
+                        if d[i] == row[i+1]:
                             student_result.append(1)
                         else:
                             student_result.append(0)
+
         sum = 0
         for i in range(1,len(student_result)):
             sum+=student_result[i]
@@ -200,6 +202,7 @@ class SummativeAssessment(Frame):
             student_result.append("F")
         with open('SummativeResults.csv', mode='a', newline='') as results_file:
             write_results = csv.writer(results_file, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
+            print(student_result)
             write_results.writerow(student_result)
 
         exit()

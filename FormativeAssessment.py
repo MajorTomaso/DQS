@@ -167,7 +167,9 @@ class FormAssessment(Frame):
 
 
     def Submit(self):
-        if (len(self.varQ1.get()) == 0) or (len(self.varQ2.get()) == 0) or (len(self.varQ3.get()) == 0) or (len(self.varQ4.get()) == 0) or (len(self.varQ5.get()) == 0) or (len(self.varQ6.get()) == 0) or (len(self.varQ7.get()) == 0) or (len(self.varQ8.get()) == 0) or (len(self.varQ9.get()) == 0) or (len(self.varQ10.get()) == 0):
+        if (len(self.varQ1.get()) == 0) or (len(self.varQ2.get()) == 0) or (len(self.varQ3.get()) == 0) or (len(self.varQ4.get()) == 0) or (len(self.varQ5.get()) == 0) or (len(self.varQ6.get()) == 0) or (len(self.varQ7.get()) == 0) or (len(self.varQ8.get()) == 0) or (len(self.varQ9.get()) == 0) or (len(self.varQ10.get()) == 0 or (len(self.varAns1.get()) == 0) or (len(self.varAns2.get()) == 0) or
+        (len(self.varAns3.get()) == 0) or (len(self.varAns4.get()) == 0) or (len(self.varAns5.get()) == 0) or (len(self.varAns6.get()) == 0) or
+        (len(self.varAns7.get()) == 0) or (len(self.varAns8.get()) == 0) or (len(self.varAns9.get()) == 0) or (len(self.varAns10.get()) == 0)):
             tkinter.messagebox.showwarning("Entry Error", "Answer all of the questions.")
         else:
             #The results will be stored in a list
@@ -177,11 +179,11 @@ class FormAssessment(Frame):
             student_result = []
             import csv
             matchList = []
-            with open("FormativeAnswers.csv") as csvfile:            
+            with open("FormativeAnswers.csv") as csvfile:
                 reader = csv.reader(csvfile)
                 for row in reader:
                     if row[0] == filename1:
-                        for i in range (0, len(d)): 
+                        for i in range (0, len(d)):
                             if d[i] == row[i+1]:
                                 student_result.append(1)
                                 matchList.append(1)
@@ -191,7 +193,7 @@ class FormAssessment(Frame):
             print(student_result)
             with open('FormativeResults.csv', mode='a', newline='') as results_file:
                 write_results = csv.writer(results_file, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
-                write_results.writerow(student_result) 
+                write_results.writerow(student_result)
 
             try:
                 if finAttempt == True:
