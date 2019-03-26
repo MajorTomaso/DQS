@@ -91,77 +91,77 @@ class FormAssessment(Frame):
         lblGrid.grid(row=0, column=2)
 
         lblQ1= Label(self, text=inList[3], font=('MS', 10, "bold"))
-        lblQ1.grid(row=1, column=0)
+        lblQ1.grid(row=1, column=1, sticky=W)
 
         self.varQ1 = StringVar()
-        self.entQ1 = Entry(self, textvariable=self.varQ1)
-        self.entQ1.grid(row=2, column=0)
+        self.entQ1 = Entry(self, textvariable=self.varQ1, width=40)
+        self.entQ1.grid(row=2, column=1, sticky=W)
 
         lblQ2= Label(self, text=inList[4], font=('MS', 10, "bold"))
-        lblQ2.grid(row=3, column=0)
+        lblQ2.grid(row=3, column=1, sticky=W)
 
         self.varQ2 = StringVar()
-        self.entQ2 = Entry(self, textvariable=self.varQ2)
-        self.entQ2.grid(row=4, column=0)
+        self.entQ2 = Entry(self, textvariable=self.varQ2, width=40)
+        self.entQ2.grid(row=4, column=1, sticky=W)
 
         lblQ3= Label(self, text=inList[5], font=('MS', 10, "bold"))
-        lblQ3.grid(row=5, column=0)
+        lblQ3.grid(row=5, column=1, sticky=W)
 
         self.varQ3 = StringVar()
-        self.entQ3 = Entry(self, textvariable=self.varQ3)
-        self.entQ3.grid(row=6, column=0)
+        self.entQ3 = Entry(self, textvariable=self.varQ3, width=40)
+        self.entQ3.grid(row=6, column=1, sticky=W)
 
         lblQ4= Label(self, text=inList[6], font=('MS', 10, "bold"))
-        lblQ4.grid(row=7, column=0)
+        lblQ4.grid(row=7, column=1, sticky=W)
 
         self.varQ4 = StringVar()
-        self.entQ4 = Entry(self, textvariable=self.varQ4)
-        self.entQ4.grid(row=8, column=0)
+        self.entQ4 = Entry(self, textvariable=self.varQ4, width=40)
+        self.entQ4.grid(row=8, column=1, sticky=W)
 
         lblQ5= Label(self, text=inList[7], font=('MS', 10, "bold"))
-        lblQ5.grid(row=9, column=0)
+        lblQ5.grid(row=9, column=1, columnspan=2, sticky=W)
 
         self.varQ5 = StringVar()
-        self.entQ5 = Entry(self, textvariable=self.varQ5)
-        self.entQ5.grid(row=10, column=0)
+        self.entQ5 = Entry(self, textvariable=self.varQ5, width=40)
+        self.entQ5.grid(row=10, column=1, sticky=W)
 
         lblQ6= Label(self, text=inList[8], font=('MS', 10, "bold"))
-        lblQ6.grid(row=1, column=1)
+        lblQ6.grid(row=11, column=1, sticky=W)
 
         self.varQ6 = StringVar()
-        self.entQ6 = Entry(self, textvariable=self.varQ6)
-        self.entQ6.grid(row=2, column=1)
+        self.entQ6 = Entry(self, textvariable=self.varQ6, width=40)
+        self.entQ6.grid(row=12, column=1, sticky=W)
 
         lblQ7= Label(self, text=inList[9], font=('MS', 10, "bold"))
-        lblQ7.grid(row=3, column=1)
+        lblQ7.grid(row=13, column=1, sticky=W)
 
         self.varQ7 = StringVar()
-        self.entQ7 = Entry(self, textvariable=self.varQ7)
-        self.entQ7.grid(row=4, column=1)
+        self.entQ7 = Entry(self, textvariable=self.varQ7, width=40)
+        self.entQ7.grid(row=14, column=1, sticky=W)
 
         lblQ8= Label(self, text=inList[10], font=('MS', 10, "bold"))
-        lblQ8.grid(row=5, column=1)
+        lblQ8.grid(row=15, column=1, sticky=W)
 
         self.varQ8 = StringVar()
-        self.entQ8 = Entry(self, textvariable=self.varQ8)
-        self.entQ8.grid(row=6, column=1)
+        self.entQ8 = Entry(self, textvariable=self.varQ8, width=40)
+        self.entQ8.grid(row=16, column=1, sticky=W)
 
         lblQ9= Label(self, text=inList[11], font=('MS', 10, "bold"))
-        lblQ9.grid(row=7, column=1)
+        lblQ9.grid(row=17, column=1, sticky=W)
 
         self.varQ9 = StringVar()
-        self.entQ9 = Entry(self, textvariable=self.varQ9)
-        self.entQ9.grid(row=8, column=1)
+        self.entQ9 = Entry(self, textvariable=self.varQ9, width=40)
+        self.entQ9.grid(row=18, column=1, sticky=W)
 
         lblQ10= Label(self, text=inList[12], font=('MS', 10, "bold"))
-        lblQ10.grid(row=9, column=1)
+        lblQ10.grid(row=19, column=1, sticky=W)
 
         self.varQ10 = StringVar()
-        self.entQ10 = Entry(self, textvariable=self.varQ10)
-        self.entQ10.grid(row=10, column=1)
+        self.entQ10 = Entry(self, textvariable=self.varQ10, width=40)
+        self.entQ10.grid(row=20, column=1, sticky=W)
 
         butSub = Button(self, text='Submit',font=('MS', 10,'bold'), command= self.Submit)
-        butSub.grid(row=11, column=2)
+        butSub.grid(row=21, column=2)
 
 
     def Submit(self):
