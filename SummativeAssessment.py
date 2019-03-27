@@ -49,6 +49,7 @@ class ChooseTest(Frame):
             index = self.listTest.curselection()[0]
             strName = str(self.listTest.get(index))
             root.withdraw()
+            print(strName)
             SummativeAssessment(rootSum, strName, username)
         except:
             rootSum.withdraw()
