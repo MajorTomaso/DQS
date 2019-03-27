@@ -45,10 +45,15 @@ class ChooseTest(Frame):
         username = self.username.get()
         global rootSum
         rootSum = Toplevel(self)
-        index = self.listTest.curselection()[0]
-        strName = str(self.listTest.get(index))
-        root.withdraw()
-        SummativeAssessment(rootSum, strName, username)
+        try:
+            index = self.listTest.curselection()[0]
+            strName = str(self.listTest.get(index))
+            root.withdraw()
+            SummativeAssessment(rootSum, strName, username)
+        except:
+            rootSum.withdraw()
+            tkinter.messagebox.showwarning("Error","You need to select one of the tests!")
+       
 
 class SummativeAssessment(Frame):
 
@@ -72,7 +77,12 @@ class SummativeAssessment(Frame):
             for row in reader:
                 if row[0] == username:
                     foundUser = True
-        if (currentDate > endDate) == True and foundUser:
+        if username == "":
+            rootSum.destroy()
+            tkinter.messagebox.showwarning("Error","You need to enter name !")
+            root.deiconify()
+            
+        elif (currentDate > endDate) == True and foundUser:
             Frame.__init__(self, master)
             rootSum.withdraw()
             tkinter.messagebox.showwarning("Date Error", "You have completed test, you can view you feedback now!")
