@@ -45,7 +45,6 @@ class ChooseTest(Frame):
         username = self.username.get()
         global rootSum
         rootSum = Toplevel(self)
-<<<<<<< HEAD
         try:
             index = self.listTest.curselection()[0]
             strName = str(self.listTest.get(index))
@@ -54,19 +53,8 @@ class ChooseTest(Frame):
         except:
             rootSum.withdraw()
             tkinter.messagebox.showwarning("Error","You need to select one of the tests!")
-       
-=======
-        index = self.listTest.curselection()[0]
-        strName = str(self.listTest.get(index))
-        root.withdraw()
-        try:
-            SummativeAssessment(rootSum, strName, username)
-        except:
-            rootSum.withdraw()
-            tkinter.messagebox.showwarning("Date Error", "Test is never gonna happen")
-            root.destroy()
+            root.deiconify()
             
->>>>>>> ebff39663e00a60ac5e3401b885817516ec28a8f
 
 class SummativeAssessment(Frame):
 

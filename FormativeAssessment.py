@@ -44,7 +44,7 @@ class ChooseTest(Frame):
             FormAssessment(rootForm, strName)
         except:
             rootForm.withdraw()
-            tkinter.messagebox.showwarning("Date Error", "Test is never gonna happen")
+            tkinter.messagebox.showwarning("Date Error", "The date you chose is wrong.")
             root.destroy()
 
 class FormAssessment(Frame):
