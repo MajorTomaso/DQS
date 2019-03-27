@@ -40,7 +40,12 @@ class ChooseTest(Frame):
         index = self.listTest.curselection()[0]
         strName = str(self.listTest.get(index))
         root.withdraw()
-        FormAssessment(rootForm, strName)
+        try:
+            FormAssessment(rootForm, strName)
+        except:
+            rootForm.withdraw()
+            tkinter.messagebox.showwarning("Date Error", "Test is never gonna happen")
+            root.destroy()
 
 class FormAssessment(Frame):
 
