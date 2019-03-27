@@ -48,7 +48,13 @@ class ChooseTest(Frame):
         index = self.listTest.curselection()[0]
         strName = str(self.listTest.get(index))
         root.withdraw()
-        SummativeAssessment(rootSum, strName, username)
+        try:
+            SummativeAssessment(rootSum, strName, username)
+        except:
+            rootSum.withdraw()
+            tkinter.messagebox.showwarning("Date Error", "Test is never gonna happen")
+            root.destroy()
+            
 
 class SummativeAssessment(Frame):
 
