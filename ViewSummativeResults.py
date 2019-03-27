@@ -12,7 +12,7 @@ with open('SummativeResults.csv') as all_results:
 		sum_all_percentages += float(row[11])
 		number_of_students += 1
 		student_questions.append([row[i] for i in range(0,11)])
-summary = sum_all_percentages/number_of_students
+summary = round(sum_all_percentages/number_of_students,2)
 
 class DisplayResults(Frame):
 
