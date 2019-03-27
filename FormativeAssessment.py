@@ -167,9 +167,7 @@ class FormAssessment(Frame):
 
 
     def Submit(self):
-        if (len(self.varQ1.get()) == 0) or (len(self.varQ2.get()) == 0) or (len(self.varQ3.get()) == 0) or (len(self.varQ4.get()) == 0) or (len(self.varQ5.get()) == 0) or (len(self.varQ6.get()) == 0) or (len(self.varQ7.get()) == 0) or (len(self.varQ8.get()) == 0) or (len(self.varQ9.get()) == 0) or (len(self.varQ10.get()) == 0 or (len(self.varAns1.get()) == 0) or (len(self.varAns2.get()) == 0) or
-        (len(self.varAns3.get()) == 0) or (len(self.varAns4.get()) == 0) or (len(self.varAns5.get()) == 0) or (len(self.varAns6.get()) == 0) or
-        (len(self.varAns7.get()) == 0) or (len(self.varAns8.get()) == 0) or (len(self.varAns9.get()) == 0) or (len(self.varAns10.get()) == 0)):
+        if (len(self.varQ1.get()) == 0) or (len(self.varQ2.get()) == 0) or (len(self.varQ3.get()) == 0) or (len(self.varQ4.get()) == 0) or (len(self.varQ5.get()) == 0) or (len(self.varQ6.get()) == 0) or (len(self.varQ7.get()) == 0) or (len(self.varQ8.get()) == 0) or (len(self.varQ9.get()) == 0) or (len(self.varQ10.get()) == 0):
             tkinter.messagebox.showwarning("Entry Error", "Answer all of the questions.")
         else:
             #The results will be stored in a list
@@ -179,11 +177,13 @@ class FormAssessment(Frame):
             student_result = []
             import csv
             matchList = []
+            answerList = []
             with open("FormativeAnswers.csv") as csvfile:
                 reader = csv.reader(csvfile)
                 for row in reader:
                     if row[0] == filename1:
                         for i in range (0, len(d)):
+                            answerList.append(row[i+1])
                             if d[i] == row[i+1]:
                                 student_result.append(1)
                                 matchList.append(1)
@@ -199,7 +199,7 @@ class FormAssessment(Frame):
                 if finAttempt == True:
                     global rootFin
                     rootFin = Toplevel(self)
-                    Answers(rootFin, len(matchList))
+                    Answers(rootFin, len(matchList), answerList)
                     rootForm.withdraw()
             except:
                 global rootRet
@@ -278,13 +278,13 @@ class Retry(Frame):
         rootForm.deiconify()
 
 class Answers(Frame):
-    def __init__(self, master, correctMarks):
+    def __init__(self, master, correctMarks, answerList):
         Frame.__init__(self, master)
         self.grid()
         marks = correctMarks
-        self.createPage(marks)
+        self.createPage(marks, answerList)
 
-    def createPage(self, marks):
+    def createPage(self, marks, answerList):
         lblGrid= Label(self, width = "15", height = "2")
         lblGrid.grid(row=0, column=0)
 
@@ -305,61 +305,61 @@ class Answers(Frame):
         lblQ1= Label(self, text="Question 1", font=('MS', 10, "bold"))
         lblQ1.grid(row=2, column=0, sticky = W)
 
-        lblQ1A= Label(self, text="The answer for Question 1", font=('MS', 8))
+        lblQ1A= Label(self, text=answerList[0], font=('MS', 8))
         lblQ1A.grid(row=3, column=0, sticky = W, columnspan = 2)
 
         lblQ2= Label(self, text="Question 2", font=('MS', 10, "bold"))
         lblQ2.grid(row=4, column=0, sticky = W)
 
-        lblQ2A= Label(self, text="The answer for Question 2", font=('MS', 8))
+        lblQ2A= Label(self, text=answerList[1], font=('MS', 8))
         lblQ2A.grid(row=5, column=0, sticky = W, columnspan = 2)
 
         lblQ3= Label(self, text="Question 3", font=('MS', 10, "bold"))
         lblQ3.grid(row=6, column=0, sticky = W)
 
-        lblQ3A= Label(self, text="The answer for Question 3", font=('MS', 8))
+        lblQ3A= Label(self, text=answerList[2], font=('MS', 8))
         lblQ3A.grid(row=7, column=0, sticky = W, columnspan = 2)
 
         lblQ4= Label(self, text="Question 4", font=('MS', 10, "bold"))
         lblQ4.grid(row=8, column=0, sticky = W)
 
-        lblQ4A= Label(self, text="The answer for Question 4", font=('MS', 8))
+        lblQ4A= Label(self, text=answerList[3], font=('MS', 8))
         lblQ4A.grid(row=9, column=0, sticky = W, columnspan = 2)
 
         lblQ5= Label(self, text="Question 5", font=('MS', 10, "bold"))
         lblQ5.grid(row=10, column=0, sticky = W)
 
-        lblQ5A= Label(self, text="The answer for Question 5", font=('MS', 8))
+        lblQ5A= Label(self, text=answerList[4], font=('MS', 8))
         lblQ5A.grid(row=11, column=0, sticky = W, columnspan = 2)
 
         lblQ6= Label(self, text="Question 6", font=('MS', 10, "bold"))
         lblQ6.grid(row=12, column=0, sticky = W)
 
-        lblQ6A= Label(self, text="The answer for Question 6", font=('MS', 8))
+        lblQ6A= Label(self, text=answerList[5], font=('MS', 8))
         lblQ6A.grid(row=13, column=0, sticky = W, columnspan = 2)
 
         lblQ7= Label(self, text="Question 7", font=('MS', 10, "bold"))
         lblQ7.grid(row=14, column=0, sticky = W)
 
-        lblQ7A= Label(self, text="The answer for Question 7", font=('MS', 8))
+        lblQ7A= Label(self, text=answerList[6], font=('MS', 8))
         lblQ7A.grid(row=15, column=0, sticky = W, columnspan = 2)
 
         lblQ8= Label(self, text="Question 8", font=('MS', 10, "bold"))
         lblQ8.grid(row=16, column=0, sticky = W)
 
-        lblQ8A= Label(self, text="The answer for Question 8", font=('MS', 8))
+        lblQ8A= Label(self, text=answerList[7], font=('MS', 8))
         lblQ8A.grid(row=17, column=0, sticky = W, columnspan = 2)
 
         lblQ9= Label(self, text="Question 9", font=('MS', 10, "bold"))
         lblQ9.grid(row=18, column=0, sticky = W)
 
-        lblQ9A= Label(self, text="The answer for Question 9", font=('MS', 8))
+        lblQ9A= Label(self, text=answerList[8], font=('MS', 8))
         lblQ9A.grid(row=19, column=0, sticky = W, columnspan = 2)
 
         lblQ10= Label(self, text="Question 10", font=('MS', 10, "bold"))
         lblQ10.grid(row=20, column=0, sticky = W)
 
-        lblQ10A= Label(self, text="The answer for Question 10", font=('MS', 8))
+        lblQ10A= Label(self, text=answerList[9], font=('MS', 8))
         lblQ10A.grid(row=21, column=0, sticky = W, columnspan = 2)
 
         butClose = Button(self, text='Close',font=('MS', 10,'bold'), command = root.destroy)
