@@ -17,11 +17,18 @@ class ChooseTest(Frame):
         scroll = Scrollbar(self, command= self.listTest.yview)
         self.listTest.configure(yscrollcommand=scroll.set)
 
-        self.listTest.grid(row=0, column=2, columnspan=2)
+        self.listTest.grid(row=0, column=1)
         scroll.grid(row=0, column=4, sticky=W)
 
+        lblQ11=Label(self, text="Enter your name: ", font=('MS', 10, "bold"))
+        lblQ11.grid(row=1,column=0, sticky=E)
+
+        self.username = StringVar()
+        self.entName = Entry(self, textvariable=self.username)
+        self.entName.grid(row=1,column=1, sticky=W)
+
         butSelect = Button(self, text='Select',font=('MS', 10,'bold'), command = self.Select)
-        butSelect.grid(row=1, column=2)
+        butSelect.grid(row=2, column=1, sticky=E)
 
         #Gets current directory and adds path to the pickle folder
         directory = os.getcwd() + "\\sumPickle"
@@ -35,30 +42,42 @@ class ChooseTest(Frame):
         self.listTest.selection_set(END)
 
     def Select(self):
+        username = self.username.get()
         global rootSum
         rootSum = Toplevel(self)
         index = self.listTest.curselection()[0]
         strName = str(self.listTest.get(index))
         root.withdraw()
-        SummativeAssessment(rootSum, strName)
+        SummativeAssessment(rootSum, strName, username)
 
 class SummativeAssessment(Frame):
 
-    def __init__(self, master, filename):
+    def __init__(self, master, filename, username):
         self.filename = filename
         global filename1
         filename1=filename
-        print(filename)
         directory = os.getcwd() + "\\sumPickle\\" + filename
         pickle_in = open(directory, "rb")
         inList = pickle.load(pickle_in)
-        print(inList)
 
         currentDate = datetime.now()
         dateFormat = "%d/%m/%Y"
         startDate = datetime.strptime(inList[1], dateFormat)
         endDate = datetime.strptime(inList[2], dateFormat)
-        if (currentDate > endDate) == True:
+
+        import csv
+        foundUser = False
+        with open("SummativeResults.csv") as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if row[0] == username:
+                    foundUser = True
+        if (currentDate > endDate) == True and foundUser:
+            tkinter.messagebox.showwarning("Date Error", "You have completed test, you can view you feedback now!")
+            root.destroy()
+            import ViewSummativeAnswers
+
+        elif (currentDate > endDate) == True:
             rootSum.destroy()
             errorText = "Test is unavailable after " + inList[2]
             tkinter.messagebox.showwarning("Date Error", errorText)
@@ -159,15 +178,8 @@ class SummativeAssessment(Frame):
         lblgrid=Label(self)
         lblgrid.grid(row=21,column=0)
 
-        lblQ11=Label(self, text="Enter your name: ", font=('MS', 10, "bold"))
-        lblQ11.grid(row=22,column=0, sticky=E)
-
-        self.varQ11 = StringVar()
-        self.entQ11 = Entry(self, textvariable=self.varQ11)
-        self.entQ11.grid(row=22,column=1, sticky=W)
-
         butSub = Button(self, text='Submit',font=('MS', 10,'bold'), command= self.Submit)
-        butSub.grid(row=22, column=2)
+        butSub.grid(row=22, column=1)
 
 
     def Submit(self):
@@ -184,9 +196,7 @@ class SummativeAssessment(Frame):
             student_result.append(self.varQ11.get())
             for row in reader:
                 if row[0] == filename1:
-                    print(len(d))
                     for i in range (0, len(d)):
-                        print(d[i] == row[i+1])
                         if d[i] == row[i+1]:
                             student_result.append(1)
                         else:
@@ -202,7 +212,6 @@ class SummativeAssessment(Frame):
             student_result.append("F")
         with open('SummativeResults.csv', mode='a', newline='') as results_file:
             write_results = csv.writer(results_file, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
-            print(student_result)
             write_results.writerow(student_result)
 
         exit()
