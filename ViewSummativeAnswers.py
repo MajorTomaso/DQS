@@ -29,7 +29,6 @@ class answerPage(Frame):
     def __init__(self, master):
         Frame.__init__(self, master)
         self.grid()
-
         self.answer()
 
     def answer(self):
