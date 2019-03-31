@@ -77,13 +77,16 @@ class SummativeAssessment(Frame):
         with open("SummativeResults.csv") as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                if row[0] == username:
+                if row[0] == filename and row[1] == username:
                     foundUser = True
         if username == "":
             rootSum.destroy()
             tkinter.messagebox.showwarning("Error","You need to enter name !")
             root.deiconify()
-            
+        elif foundUser == True and (currentDate < endDate) == True:
+            rootSum.destroy()
+            tkinter.messagebox.showwarning("Date Error", "You have already done this test, but you cannot view the correct answers yet.")
+            root.deiconify()
         elif (currentDate > endDate) == True and foundUser:
             Frame.__init__(self, master)
             rootSum.withdraw()
@@ -206,6 +209,7 @@ class SummativeAssessment(Frame):
         student_result=[]
         with open("SummativeAnswers.csv") as csvfile:
             reader = csv.reader(csvfile)
+            student_result.append(filename1)
             student_result.append(self.username)
             for row in reader:
                 if row[0] == filename1:
@@ -214,9 +218,9 @@ class SummativeAssessment(Frame):
                             student_result.append(1)
                         else:
                             student_result.append(0)
-
+        
         sum = 0
-        for i in range(1,len(student_result)):
+        for i in range(2,len(student_result)):
             sum+=student_result[i]
         student_result.append(sum*10)
         if sum*10 >= 40:
@@ -228,6 +232,32 @@ class SummativeAssessment(Frame):
             write_results.writerow(student_result)
         tkinter.messagebox.showwarning("Submitted", "You have successfully submitted a test!")
         root.destroy()
+        Feedback(student_result)
+        
+        
+class Feedback(Frame):
+    def __init__(self,student_result):
+        Frame.__init__(self)
+        self.grid()
+        self.createPage(student_result)
+    def createPage(self, student_result):
+            lblGrid= Label(self, width = "15", height = "2")
+            lblGrid.grid(row=0, column=0)
+            Label(self, text = "Your results" , font=('MS', 10, 'bold')).grid(row=0, column=6)
+
+            for i in range(2,12):
+                Label(self, text=("Q" + str(i-1) + "\t"), font=('MS',10,"bold")).grid(row=2, column=i)
+                if student_result[i] == 1:
+                    Label(self, text=('✔' + '\t'), font=('MS',10,"bold")).grid(row=3, column=i)
+                else:
+                    Label(self, text=('✘' + '\t'), font=('MS',10,"bold")).grid(row=3, column=i)
+            print(student_result[12])
+            print(type(student_result[12]))
+            if student_result[12] >= 40:
+                Label(self, text=('Congratulations,you passed. Your mark is: ' + str(student_result[12]) + "%"), font=('MS',10,"bold")).grid(row=5, column=8, columnspan = 4)
+            else:
+                Label(self, text=('Sorry, you failed. Your mark is: ' + str(student_result[12]) + "%"), font=('MS',10,"bold")).grid(row=5, column=8, columnspan = 4)
+                
 
 class introPage(Frame):
     def __init__(self, master, username):
@@ -267,9 +297,9 @@ class answerPage(Frame):
         with open("SummativeResults.csv") as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                if row[0] == username:
-                    mark.append(row[11])
+                if row[1] == username:
                     mark.append(row[12])
+                    mark.append(row[13])
         lblProg = Label(self, text='Answers for Question 1-10', font=('MS', 12,'bold'), width = "20", height = "3")
         lblProg.grid(row=0, column=0)
 
