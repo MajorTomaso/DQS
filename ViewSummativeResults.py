@@ -85,7 +85,7 @@ class CalculateResults(Frame):
 			lblGrid.grid(row=0, column=2)
 			for student,performance in student_results.items():
 				Label(self, text=student , font=('MS',10,"bold")).grid(row=list(student_results.keys()).index(student)+5,column=0)
-				Label(self, text=performance[0] , font=('MS',10,"bold")).grid(row=list(student_results.keys()).index(student)+5,column=1)
+				Label(self, text=performance[0]+"%", font=('MS',10,"bold")).grid(row=list(student_results.keys()).index(student)+5,column=1)
 				Label(self, text= performance[1], font=('MS',10,"bold")).grid(row=list(student_results.keys()).index(student)+5, column=2)
 
 	def createButtons(self):
