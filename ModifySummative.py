@@ -312,40 +312,48 @@ class ModifyForm(Frame):
                 (len(self.varAns7.get()) == 0) or (len(self.varAns8.get()) == 0) or (len(self.varAns9.get()) == 0) or (len(self.varAns10.get()) == 0)):
             tkinter.messagebox.showwarning("Submit Error", "Select all of the boxes.")
         else:
-            index = self.listTime.curselection()[0]
-            strTime = str(self.listTime.get(index))
+            try:
+                datestring = self.startY.get()+"/"+self.startM.get()+"/"+self.startD.get()
+                datestring1 = self.endY.get()+"/"+self.endM.get()+"/"+self.endD.get()
+                dateFormat = "%Y/%m/%d"
+                checkStart = datetime.strptime(datestring,dateFormat)
+                checkEnd = datetime.strptime(datestring1,dateFormat)
+                index = self.listTime.curselection()[0]
+                strTime = str(self.listTime.get(index))
 
-            inList = [strTime, self.startD.get() + "/" + self.startM.get() + "/" + self.startY.get(), self.endD.get() + "/" + self.endM.get() + "/" + self.endY.get(), self.varQ1.get(), self.varQ2.get(), self.varQ3.get(), self.varQ4.get(), self.varQ5.get(), self.varQ6.get(),
-                                self.varQ7.get(), self.varQ8.get(), self.varQ9.get(), self.varQ10.get()]
-            ansList = [filename + ".pickle", self.varAns1.get(), self.varAns2.get(), self.varAns3.get(), self.varAns4.get(), self.varAns5.get(), self.varAns6.get(), self.varAns7.get(), self.varAns8.get(),
-                       self.varAns9.get(), self.varAns10.get()]
-            print(ansList)
-            import csv
-            with open('SummativeAnswers.csv') as csvfile:
-                data = list(csv.reader(csvfile))
-                print(data)
-                print(filename)
-            with open('SummativeAnswers1.csv', mode='w', newline='') as csvfile:
-                writer = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
-                for row in data:
-                    if row[0] != (filename + ".pickle") :
-                        writer.writerow(row)
-                        print('first if')
-                    elif row[0] == (filename + ".pickle"):
-                        print('second if')
-                        writer.writerow(ansList)
-            os.remove("SummativeAnswers.csv")
-            os.rename('SummativeAnswers1.csv', 'SummativeAnswers.csv')
+                inList = [strTime, self.startD.get() + "/" + self.startM.get() + "/" + self.startY.get(), self.endD.get() + "/" + self.endM.get() + "/" + self.endY.get(), self.varQ1.get(), self.varQ2.get(), self.varQ3.get(), self.varQ4.get(), self.varQ5.get(), self.varQ6.get(),
+                                    self.varQ7.get(), self.varQ8.get(), self.varQ9.get(), self.varQ10.get()]
+                ansList = [filename + ".pickle", self.varAns1.get(), self.varAns2.get(), self.varAns3.get(), self.varAns4.get(), self.varAns5.get(), self.varAns6.get(), self.varAns7.get(), self.varAns8.get(),
+                           self.varAns9.get(), self.varAns10.get()]
+                print(ansList)
+                import csv
+                with open('SummativeAnswers.csv') as csvfile:
+                    data = list(csv.reader(csvfile))
+                    print(data)
+                    print(filename)
+                with open('SummativeAnswers1.csv', mode='w', newline='') as csvfile:
+                    writer = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
+                    for row in data:
+                        if row[0] != (filename + ".pickle") :
+                            writer.writerow(row)
+                            print('first if')
+                        elif row[0] == (filename + ".pickle"):
+                            print('second if')
+                            writer.writerow(ansList)
+                os.remove("SummativeAnswers.csv")
+                os.rename('SummativeAnswers1.csv', 'SummativeAnswers.csv')
 
 
 
 
-            directory = os.getcwd() + "\\sumPickle\\" + filename + ".pickle"
-            pickle_out = open(directory, "wb")
-            pickle.dump(inList, pickle_out)
-            pickle_out.close()
-            tkinter.messagebox.showwarning("Submitted", "You have modified " + filename + " successfully!")
-            root.destroy()
+                directory = os.getcwd() + "\\sumPickle\\" + filename + ".pickle"
+                pickle_out = open(directory, "wb")
+                pickle.dump(inList, pickle_out)
+                pickle_out.close()
+                tkinter.messagebox.showwarning("Submitted", "You have modified " + filename + " successfully!")
+                root.destroy()
+            except:
+                tkinter.messagebox.showwarning("Submit Erorr", "Invalid date")
 #main
 root = Tk()
 root.title("Modify Summative Assessment")

@@ -45,16 +45,10 @@ class ChooseTest(Frame):
         username = self.username.get()
         global rootSum
         rootSum = Toplevel(self)
-        try:
-            index = self.listTest.curselection()[0]
-            strName = str(self.listTest.get(index))
-            root.withdraw()
-            print(strName)
-            SummativeAssessment(rootSum, strName, username)
-        except:
-            rootSum.withdraw()
-            tkinter.messagebox.showwarning("Error","You need to select one of the tests!")
-            root.deiconify()
+        index = self.listTest.curselection()[0]
+        strName = str(self.listTest.get(index))
+        root.withdraw()
+        SummativeAssessment(rootSum, strName, username)
             
 
 class SummativeAssessment(Frame):
@@ -66,7 +60,6 @@ class SummativeAssessment(Frame):
         directory = os.getcwd() + "\\sumPickle\\" + filename
         pickle_in = open(directory, "rb")
         inList = pickle.load(pickle_in)
-
         currentDate = datetime.now()
         dateFormat = "%d/%m/%Y"
         startDate = datetime.strptime(inList[1], dateFormat)
@@ -204,7 +197,7 @@ class SummativeAssessment(Frame):
         for value in d:
             if len(value)==0:
                 tkinter.messagebox.showwarning("Entry Error", "Answer all of the questions.")
-                break
+                return
         import csv
         student_result=[]
         with open("SummativeAnswers.csv") as csvfile:
@@ -251,8 +244,6 @@ class Feedback(Frame):
                     Label(self, text=('✔' + '\t'), font=('MS',10,"bold")).grid(row=3, column=i)
                 else:
                     Label(self, text=('✘' + '\t'), font=('MS',10,"bold")).grid(row=3, column=i)
-            print(student_result[12])
-            print(type(student_result[12]))
             if student_result[12] >= 40:
                 Label(self, text=('Congratulations,you passed. Your mark is: ' + str(student_result[12]) + "%"), font=('MS',10,"bold")).grid(row=5, column=8, columnspan = 4)
             else:

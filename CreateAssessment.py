@@ -3,6 +3,7 @@ import tkinter.messagebox
 import pickle
 import os
 import csv
+from datetime import datetime
 class CreateAssessment(Frame):
     # GUI Setup
     def __init__(self, master):
@@ -253,6 +254,16 @@ class CreateAssessment(Frame):
         self.varQ8.set("")
         self.varQ9.set("")
         self.varQ10.set("")
+        self.varAns1.set("")
+        self.varAns2.set("")
+        self.varAns3.set("")
+        self.varAns4.set("")
+        self.varAns5.set("")
+        self.varAns6.set("")
+        self.varAns7.set("")
+        self.varAns8.set("")
+        self.varAns9.set("")
+        self.varAns10.set("")
 
     def submit(self):
         try:
@@ -268,30 +279,40 @@ class CreateAssessment(Frame):
                 (len(self.varAns3.get()) == 0) or (len(self.varAns4.get()) == 0) or (len(self.varAns5.get()) == 0) or (len(self.varAns6.get()) == 0) or
                 (len(self.varAns7.get()) == 0) or (len(self.varAns8.get()) == 0) or (len(self.varAns9.get()) == 0) or (len(self.varAns10.get()) == 0)):
             tkinter.messagebox.showwarning("Submit Error", "Select all of the boxes.")
+        
         else:
-            index = self.listTime.curselection()[0]
-            strTime = str(self.listTime.get(index))
+            try:
+               datestring = self.startY.get()+"/"+self.startM.get()+"/"+self.startD.get()
+               datestring1 = self.endY.get()+"/"+self.endM.get()+"/"+self.endD.get()
+               dateFormat = "%Y/%m/%d"
+               checkStart = datetime.strptime(datestring,dateFormat)
+               checkEnd = datetime.strptime(datestring1,dateFormat)
+               index = self.listTime.curselection()[0]
+               strTime = str(self.listTime.get(index))
 
-            inList = [strTime, self.startD.get() + "/" + self.startM.get() + "/" + self.startY.get(), self.endD.get() + "/" + self.endM.get() + "/" + self.endY.get(), self.varQ1.get(), self.varQ2.get(), self.varQ3.get(), self.varQ4.get(), self.varQ5.get(), self.varQ6.get(),
-                                self.varQ7.get(), self.varQ8.get(), self.varQ9.get(), self.varQ10.get()]
-            ansList = [self.testname.get()+".pickle", self.varAns1.get(), self.varAns2.get(), self.varAns3.get(), self.varAns4.get(), self.varAns5.get(), self.varAns6.get(), self.varAns7.get(), self.varAns8.get(),
-                       self.varAns9.get(), self.varAns10.get()]
-    
-            if self.testVar.get() == 1:
-                with open('FormativeAnswers.csv', mode='a', newline='') as csvfile:
-                    write_answers = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
-                    write_answers.writerow(ansList)
-                directory = os.getcwd() + "\\formPickle\\" + self.testname.get() + ".pickle"
-            else:
-                with open('SummativeAnswers.csv', mode='a', newline='') as csvfile:
-                    write_answers = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
-                    write_answers.writerow(ansList)
-                directory = os.getcwd() + "\\sumPickle\\" + self.testname.get() + ".pickle"
-            pickle_out = open(directory, "wb")
-            pickle.dump(inList, pickle_out)
-            pickle_out.close()
-            tkinter.messagebox.showwarning("Submitted", "You have created a test successfully!")
-            root.destroy()
+               inList = [strTime, self.startD.get() + "/" + self.startM.get() + "/" + self.startY.get(), self.endD.get() + "/" + self.endM.get() + "/" + self.endY.get(), self.varQ1.get(), self.varQ2.get(), self.varQ3.get(), self.varQ4.get(), self.varQ5.get(), self.varQ6.get(),
+                                    self.varQ7.get(), self.varQ8.get(), self.varQ9.get(), self.varQ10.get()]
+               ansList = [self.testname.get()+".pickle", self.varAns1.get(), self.varAns2.get(), self.varAns3.get(), self.varAns4.get(), self.varAns5.get(), self.varAns6.get(), self.varAns7.get(), self.varAns8.get(),
+                           self.varAns9.get(), self.varAns10.get()]
+        
+               if self.testVar.get() == 1:
+                   with open('FormativeAnswers.csv', mode='a', newline='') as csvfile:
+                       write_answers = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
+                       write_answers.writerow(ansList)
+                   directory = os.getcwd() + "\\formPickle\\" + self.testname.get() + ".pickle"
+               else:
+                    with open('SummativeAnswers.csv', mode='a', newline='') as csvfile:
+                        write_answers = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
+                        write_answers.writerow(ansList)
+                    directory = os.getcwd() + "\\sumPickle\\" + self.testname.get() + ".pickle"
+               pickle_out = open(directory, "wb")
+               pickle.dump(inList, pickle_out)
+               pickle_out.close()
+               tkinter.messagebox.showwarning("Submitted", "You have created a test successfully!")
+               root.destroy()
+            except:
+                tkinter.messagebox.showwarning("Submit Error", "Invalid date")
+            
 
 
 #main

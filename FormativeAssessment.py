@@ -40,12 +40,7 @@ class ChooseTest(Frame):
         index = self.listTest.curselection()[0]
         strName = str(self.listTest.get(index))
         root.withdraw()
-        try:
-            FormAssessment(rootForm, strName)
-        except:
-            rootForm.withdraw()
-            tkinter.messagebox.showwarning("Date Error", "The date you chose is wrong.")
-            root.destroy()
+        FormAssessment(rootForm, strName)
 
 class FormAssessment(Frame):
 
@@ -56,7 +51,6 @@ class FormAssessment(Frame):
         directory = os.getcwd() + "\\formPickle\\" + filename
         pickle_in = open(directory, "rb")
         inList = pickle.load(pickle_in)
-        print(inList)
 
         currentDate = datetime.now()
         dateFormat = "%d/%m/%Y"
@@ -185,6 +179,7 @@ class FormAssessment(Frame):
             answerList = []
             with open("FormativeAnswers.csv") as csvfile:
                 reader = csv.reader(csvfile)
+                student_result.append(filename1)
                 for row in reader:
                     if row[0] == filename1:
                         for i in range (0, len(d)):
@@ -195,7 +190,6 @@ class FormAssessment(Frame):
                             else:
                                 student_result.append(0)
 
-            print(student_result)
             with open('FormativeResults.csv', mode='a', newline='') as results_file:
                 write_results = csv.writer(results_file, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
                 write_results.writerow(student_result)
