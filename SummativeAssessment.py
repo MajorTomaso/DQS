@@ -3,6 +3,7 @@ import tkinter.messagebox
 import pickle
 import os
 from datetime import datetime
+import sys
 
 class ChooseTest(Frame):
     def __init__(self, master):
@@ -45,10 +46,14 @@ class ChooseTest(Frame):
         username = self.username.get()
         global rootSum
         rootSum = Toplevel(self)
-        index = self.listTest.curselection()[0]
-        strName = str(self.listTest.get(index))
-        root.withdraw()
-        SummativeAssessment(rootSum, strName, username)
+        try:
+            index = self.listTest.curselection()[0]
+            strName = str(self.listTest.get(index))
+            root.withdraw()
+            SummativeAssessment(rootSum, strName, username)
+        except:
+            rootSum.destroy()
+            tkinter.messagebox.showwarning("Select Error", "You need to select one of the tests")
             
 
 class SummativeAssessment(Frame):
@@ -100,7 +105,17 @@ class SummativeAssessment(Frame):
             Frame.__init__(self, master)
             self.grid()
             self.createPage(inList, username)
-            root.after(int(inList[0]) * 1000, lambda: (tkinter.messagebox.showwarning("Time Exceeded", "The test duration has been exceeded, you cannot continue the test."), root.destroy()))
+            def countdown(count):
+                Label(self, text=("Timer: " +str(count)),font=('MS', 12, "bold")).grid(row=0,column=0)
+
+                if count > 0:
+                    root.after(1000, countdown, count-1)
+                else:
+                    rootSum.withdraw()
+                    tkinter.messagebox.showwarning("Run out", "You have run out of time.")
+                    sys.exit()
+                    
+            countdown(int(inList[0]))
 
 
     def createPage(self, inList, username):
