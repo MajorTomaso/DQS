@@ -59,7 +59,6 @@ class ModifyForm(Frame):
                         for i in range(1,11):
                             ansList.append(row[i])
                             
-        print(ansList)
         Frame.__init__(self, master)
         self.grid()
         self.createPage()
@@ -297,7 +296,6 @@ class ModifyForm(Frame):
 
     def submit(self):
         filename = self.filename.strip(".pickle")
-        print(filename)
         try:
             self.listTime.curselection()[0]
             listProp = True
@@ -325,20 +323,15 @@ class ModifyForm(Frame):
                                     self.varQ7.get(), self.varQ8.get(), self.varQ9.get(), self.varQ10.get()]
                 ansList = [filename + ".pickle", self.varAns1.get(), self.varAns2.get(), self.varAns3.get(), self.varAns4.get(), self.varAns5.get(), self.varAns6.get(), self.varAns7.get(), self.varAns8.get(),
                            self.varAns9.get(), self.varAns10.get()]
-                print(ansList)
                 import csv
                 with open('FormativeAnswers.csv') as csvfile:
                     data = list(csv.reader(csvfile))
-                    print(data)
-                    print(filename)
                 with open('FormativeAnswers1.csv', mode='w', newline='') as csvfile:
                     writer = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)
                     for row in data:
                         if row[0] != (filename + ".pickle") :
                             writer.writerow(row)
-                            print('first if')
                         elif row[0] == (filename + ".pickle"):
-                            print('second if')
                             writer.writerow(ansList)
                 os.remove("FormativeAnswers.csv")
                 os.rename('FormativeAnswers1.csv', 'FormativeAnswers.csv')
